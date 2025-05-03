@@ -1,0 +1,41 @@
+.book-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: start;
+}
+
+.book-card {
+  width: 300px;
+  background-color: #cadfbe;
+  border-radius: 10px;
+  margin-left: 5px;
+}
+
+.card-body-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.card-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 180px; // ou 200px, ajusta como preferires
+}
+
+.button-wrapper {
+  text-align: center;
+  margin-top: auto;
+  margin-left: 50px;
+}
+
+
+.card-image img {
+  max-width: 75px;
+  max-height: 90px;
+  object-fit: contain;
+}
+

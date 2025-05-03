@@ -1,28 +1,42 @@
-<div class="container mt-4">
-  <h2 class="text-center text-primary mb-4">📚 Lista de Livros</h2>
+<mat-toolbar color="primary">
+  <span>📖 ASID Livraria</span>
+  <span class="spacer"></span>
+  <button mat-button>Home</button>
+  <button mat-button>Carrinho</button>
+  <button mat-button>Login</button>
+</mat-toolbar>
 
-  <div class="table-responsive">
-    <table class="table table-hover table-bordered shadow-sm">
-      <thead class="bg-primary text-white">
-      <tr>
-        <th>ID</th>
-        <th>Título</th>
-        <th>Autor</th>
-        <th>Ações</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let book of books">
-        <td>{{ book.id }}</td>
-        <td>{{ book.title }}</td>
-        <td>{{ book.author?.authorName }}</td>
-        <td>
-          <button class="btn btn-danger btn-sm" (click)="deleteBook(book.id)">
-            ❌ Excluir
-          </button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+<div class="container mt-4">
+  <!-- resto do teu conteúdo -->
+</div>
+
+<div class="container mt-4">
+  <!-- <h2 class="text-center text-primary mb-4">📚 Lista de Livros</h2> -->
+
+  <div class="book-grid">
+    <mat-card *ngFor="let book of books" class="book-card">
+      <mat-card-header>
+        <mat-card-title>{{ book.title }}</mat-card-title>
+        <mat-card-subtitle>{{ book.author?.authorName }}</mat-card-subtitle>
+      </mat-card-header>
+    
+      <mat-card-content>
+        <div class="card-body-flex">
+          <div class="card-info">
+            <p>{{ book.description }}</p>
+            <p><strong>Preço:</strong> {{ book.price | currency:'EUR' }}</p>
+            <p><strong>Quantidade:</strong> {{ book.quantity }}</p>
+            <div class="button-wrapper">
+              <button mat-raised-button color="primary">
+                🛒 Adicionar ao Carrinho
+              </button>
+            </div> 
+          </div>
+          <div class="card-image">
+            <img [src]="'assets/images/' + getImageFilename(book.title)" alt="{{ book.title }}">
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
   </div>
 </div>
