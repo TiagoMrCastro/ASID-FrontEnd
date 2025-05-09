@@ -1,0 +1,37 @@
+<mat-card>
+  <h2>Informações de Envio</h2>
+
+  <form (ngSubmit)="submitOrder()">
+    <mat-form-field class="full-width">
+      <mat-label>Primeiro Nome</mat-label>
+      <input matInput [(ngModel)]="shipping.firstName" name="firstName">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Último Nome</mat-label>
+      <input matInput [(ngModel)]="shipping.lastName" name="lastName">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Endereço</mat-label>
+      <input matInput [(ngModel)]="shipping.address" name="address">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Cidade</mat-label>
+      <input matInput [(ngModel)]="shipping.city" name="city">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Email</mat-label>
+      <input matInput [(ngModel)]="shipping.email" name="email">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Código Postal</mat-label>
+      <input matInput [(ngModel)]="shipping.postalCode" name="postalCode">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit">Finalizar Encomenda</button>
+  </form>
+</mat-card>

@@ -1,0 +1,23 @@
+<mat-card *ngFor="let item of cartItems">
+  <mat-card-title>{{ item.bookTitle }}</mat-card-title>
+  <mat-card-content>
+    <p><strong>ID do Livro:</strong> {{ item.bookId }}</p>
+    <p><strong>Quantidade:</strong> {{ item.quantity }}</p>
+    <p><strong>Preço Unitário:</strong> {{ item.unitPrice | currency:'EUR' }}</p>
+    <p><strong>Subtotal:</strong> {{ item.subTotal | currency:'EUR' }}</p>
+    
+    <!-- Info do carrinho (associação com item.cart) -->
+    <p *ngIf="item.cart">
+      <strong>ID Carrinho:</strong> {{ item.cart.id }}<br>
+      <strong>Data de Criação:</strong> {{ item.cart.createdDate | date:'short' }}
+    </p>
+
+    <button mat-icon-button color="warn" (click)="removeItem(item.id!)">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-card-content>
+</mat-card>
+
+<mat-card>
+  <mat-card-title>Total: {{ getTotal() | currency:'EUR' }}</mat-card-title>
+</mat-card>

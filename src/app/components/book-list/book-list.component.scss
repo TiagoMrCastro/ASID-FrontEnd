@@ -1,41 +1,51 @@
+.logo {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.section-title {
+  text-align: center;
+  color: #3f51b5;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
 .book-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  justify-content: start;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 10px;
 }
 
 .book-card {
-  width: 300px;
-  background-color: #cadfbe;
-  border-radius: 10px;
-  margin-left: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .card-body-flex {
   display: flex;
   justify-content: space-between;
-  align-items: stretch;
+  gap: 15px;
 }
 
 .card-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  min-height: 180px; // ou 200px, ajusta como preferires
+  flex: 2;
 }
-
-.button-wrapper {
-  text-align: center;
-  margin-top: auto;
-  margin-left: 50px;
-}
-
 
 .card-image img {
-  max-width: 75px;
-  max-height: 90px;
+  width: 100px;
+  height: auto;
   object-fit: contain;
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: center;
+  padding-top: 10px;
 }
 

@@ -1,0 +1,31 @@
+<mat-card>
+  <h3>Histórico de Encomendas (CQRS)</h3>
+
+  <mat-form-field>
+    <mat-label>Data Início</mat-label>
+    <input matInput [(ngModel)]="from" type="date">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Data Fim</mat-label>
+    <input matInput [(ngModel)]="to" type="date">
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="fetchOrders()">Filtrar</button>
+</mat-card>
+
+<mat-card *ngFor="let order of orders" style="margin-top: 1rem;">
+  <mat-card-title>Pedido #{{ order.orderId }} | {{ order.orderDate }}</mat-card-title>
+  <mat-card-content>
+    <p><strong>Total:</strong> {{ order.totalPrice | currency:'EUR' }}</p>
+    <p><strong>Morada:</strong> {{ order.shippingAddress }}</p>
+    <p><strong>Enviado para:</strong> {{ order.shipping.firstName }} {{ order.shipping.lastName }}</p>
+
+    <h4>Livros:</h4>
+    <ul>
+      <li *ngFor="let book of order.books">
+        {{ book.title }} - {{ book.quantity }}x - {{ book.price | currency:'EUR' }}
+      </li>
+    </ul>
+  </mat-card-content>
+</mat-card>
