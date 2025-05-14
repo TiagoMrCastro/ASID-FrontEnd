@@ -35,16 +35,18 @@
           </mat-error>
         </mat-form-field>
 
+        
         <div class="button-container">
-          <button
-            mat-raised-button
-            color="primary"
-            type="submit"
-            [disabled]="isLoading"
-          >
+          <button mat-raised-button color="primary" type="submit" [disabled]="isLoading">
             {{ isLoading ? 'A entrar...' : 'Entrar' }}
           </button>
         </div>
+
+        <div class="register-link">
+          <span>Ainda não tens conta?</span>
+          <button mat-button type="button" (click)="goToRegister()">Registar</button>
+       </div>
+
       </form>
     </mat-card-content>
   </mat-card>

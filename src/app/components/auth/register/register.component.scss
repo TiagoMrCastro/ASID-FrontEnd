@@ -1,0 +1,21 @@
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.register-card {
+  width: 100%;
+  max-width: 400px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.button-container {
+  margin-top: 16px;
+  display: flex;
+  justify-content: flex-end;
+}

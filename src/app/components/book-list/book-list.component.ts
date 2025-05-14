@@ -7,6 +7,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { CartService } from '../../services/cart.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-book-list',
@@ -23,7 +24,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class BookListComponent implements OnInit {
   books: any[] = [];
-  constructor(private bookService: BookService, private cartService: CartService, private auth: AuthService) {}
+  constructor(private bookService: BookService, private cartService: CartService, private auth: AuthService,private router: Router) {}
     imageList: string[] = [];
   ngOnInit(): void {
     this.loadBooks();
@@ -58,6 +59,11 @@ export class BookListComponent implements OnInit {
     this.cartService.addToCart({ userId, bookId, quantity: 1 }).subscribe(() => {
       alert('Livro adicionado ao carrinho!');
     });
+  }
+
+  logout() {
+    this.auth.logout();
+    this.router.navigate(['/login']);
   }
 
 }
