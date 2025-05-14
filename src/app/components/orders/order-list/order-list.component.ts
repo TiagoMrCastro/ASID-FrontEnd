@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
+import { AuthService } from '../../../services/auth.service'; // <-- Importado
 
 @Component({
   selector: 'app-order-list',
@@ -26,14 +27,25 @@ import { MatDividerModule } from '@angular/material/divider';
 })
 export class OrderListComponent {
   orders: OrderDetailsResponse[] = [];
-  userId = 1;
   from = '';
   to = '';
+  userId: number | null = null;
 
-  constructor(private orderService: OrderService) {}
+  constructor(private orderService: OrderService, private auth: AuthService) {
+    this.userId = this.auth.getUserId(); 
+  }
 
   fetchOrders() {
-    if (!this.from || !this.to) return alert('Seleciona datas válidas');
+    if (!this.from || !this.to) {
+      alert('Seleciona datas válidas');
+      return;
+    }
+
+    if (this.userId === null) {
+      alert('Utilizador não autenticado!');
+      return;
+    }
+
     this.orderService.getOrderHistory(this.userId, this.from, this.to).subscribe(res => {
       this.orders = res;
     });

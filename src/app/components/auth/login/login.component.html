@@ -1,25 +1,48 @@
 <div class="login-container">
   <mat-card class="login-card">
     <mat-card-header>
-      <mat-card-title>Login</mat-card-title>
+      <mat-card-title>Entrar na conta</mat-card-title>
     </mat-card-header>
+
     <mat-card-content>
       <form (ngSubmit)="login()" #loginForm="ngForm">
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Username</mat-label>
-          <input matInput name="username" [(ngModel)]="username" required>
-          <mat-error *ngIf="loginForm.submitted && !username">Campo obrigatório</mat-error>
+          <mat-label>Nome de utilizador</mat-label>
+          <input
+            matInput
+            name="username"
+            [(ngModel)]="username"
+            required
+            autocomplete="username"
+          />
+          <mat-error *ngIf="loginForm.submitted && !username">
+            Este campo é obrigatório.
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Password</mat-label>
-          <input matInput name="password" type="password" [(ngModel)]="password" required>
-          <mat-error *ngIf="loginForm.submitted && !password">Campo obrigatório</mat-error>
+          <mat-label>Palavra-passe</mat-label>
+          <input
+            matInput
+            type="password"
+            name="password"
+            [(ngModel)]="password"
+            required
+            autocomplete="current-password"
+          />
+          <mat-error *ngIf="loginForm.submitted && !password">
+            Este campo é obrigatório.
+          </mat-error>
         </mat-form-field>
 
         <div class="button-container">
-          <button mat-raised-button color="primary" type="submit">
-            Login
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="isLoading"
+          >
+            {{ isLoading ? 'A entrar...' : 'Entrar' }}
           </button>
         </div>
       </form>

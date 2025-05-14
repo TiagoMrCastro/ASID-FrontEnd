@@ -8,6 +8,7 @@ import { ShippingOrder } from '../../models/shipping.model';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { AuthService } from '../../services/auth.service'; // <-- Importado
 
 @Component({
   selector: 'app-checkout',
@@ -26,20 +27,28 @@ export class CheckoutComponent {
     postalCode: ''
   };
 
-  userId = 1; // substituir por auth futuramente
+  userId: number | null = null;
 
   constructor(
     private shippingService: ShippingService,
     private orderService: OrderService,
-    private cartService: CartService
-  ) {}
+    private cartService: CartService,
+    private auth: AuthService 
+  ) {
+    this.userId = this.auth.getUserId(); 
+  }
 
   submitOrder() {
+    if (this.userId === null) {
+      alert('Utilizador não autenticado!');
+      return;
+    }
+
     this.shippingService.createShippingOrder(this.shipping).subscribe(shippingResp => {
-      this.cartService.getCartItems(this.userId).subscribe(cartItems => {
+      this.cartService.getCartItems(this.userId!).subscribe(cartItems => {
         const bookIds = cartItems.map(item => item.bookId);
         const orderData = {
-          userId: this.userId,
+          userId: this.userId!,
           shippingId: shippingResp.id!,
           bookIds
         };

@@ -17,13 +17,24 @@ import { MatButtonModule } from '@angular/material/button';
 export class LoginComponent {
   username = '';
   password = '';
-
+  isLoading = false;
+  
   constructor(private auth: AuthService, private router: Router) {}
 
+
   login() {
+    this.isLoading = true;
     this.auth.login({ username: this.username, password: this.password }).subscribe({
-      next: () => this.router.navigate(['/books']),
-      error: () => alert('Login inválido')
+      next: () => {
+        this.isLoading = false;
+        this.router.navigate(['/books']);
+      },
+      error: () => {
+        this.isLoading = false;
+        alert('Login inválido');
+      }
     });
   }
+
+
 }
