@@ -5,12 +5,15 @@ import { CartItem } from '../../models/cart.model';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { AuthService } from '../../services/auth.service'; // <-- Importado
+import { AuthService } from '../../services/auth.service'; 
+import { Router } from '@angular/router';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule],
+  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule,  MatToolbarModule, RouterModule],
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss']
 })
@@ -18,7 +21,7 @@ export class CartComponent implements OnInit {
   cartItems: CartItem[] = [];
   userId: number | null = null;
 
-  constructor(private cartService: CartService, private auth: AuthService) {} // <-- Injetado
+  constructor(private cartService: CartService, private auth: AuthService, private router: Router) {} 
 
   ngOnInit() {
     this.userId = this.auth.getUserId();
@@ -45,5 +48,11 @@ export class CartComponent implements OnInit {
 
   getTotal(): number {
     return this.cartItems.reduce((acc, item) => acc + (item.subTotal ?? 0), 0);
+  }
+
+  
+  logout() {
+    this.auth.logout();
+    this.router.navigate(['/login']);
   }
 }

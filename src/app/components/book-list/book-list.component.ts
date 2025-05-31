@@ -8,6 +8,8 @@ import { CartService } from '../../services/cart.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
+
 
 @Component({
   selector: 'app-book-list',
@@ -17,7 +19,8 @@ import { Router } from '@angular/router';
     MatCardModule,
     MatButtonModule,
     MatToolbarModule,
-    HttpClientModule 
+    HttpClientModule ,
+    RouterModule 
   ],
   templateUrl: './book-list.component.html',
   styleUrls: ['./book-list.component.scss']
