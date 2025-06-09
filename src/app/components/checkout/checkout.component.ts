@@ -36,6 +36,7 @@ export class CheckoutComponent implements OnInit {
   shippingOptions: ShippingOrder[] = [];
   selectedShippingId: number | null = null;
   books: Book[] = [];
+  showShippingForm: boolean = true;
 
   constructor(
     private orderService: OrderService,
@@ -83,6 +84,7 @@ export class CheckoutComponent implements OnInit {
       .subscribe(() => {
         alert('Endereço de envio atribuído com sucesso!');
         this.loadComposition(); // Recarrega os dados
+        this.showShippingForm = false;
       });
   }
 
@@ -93,9 +95,9 @@ export class CheckoutComponent implements OnInit {
       this.cartService.clearCart().subscribe(() => {
         alert('✅ Encomenda finalizada com sucesso!');
       });
-        setTimeout(() => {
-          this.loadComposition(); // Executa após 1 segundo
-        }, 1000);
+      setTimeout(() => {
+        this.loadComposition(); // Executa após 1 segundo
+      }, 1000);
     });
   }
 

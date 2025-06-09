@@ -3,30 +3,36 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background: #f0f2f5;
+  background: linear-gradient(to right, #e3f2fd, #fce4ec);
+  padding: 20px;
 }
 
 .login-card {
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
   padding: 20px;
+  border-radius: 12px;
+  background: #fff;
 }
 
 .full-width {
   width: 100%;
-  margin-bottom: 15px;
+  margin-bottom: 16px;
 }
 
 .button-container {
   display: flex;
   justify-content: center;
-  margin-top: 10px;
+  margin-top: 12px;
 }
+
 .register-link {
-  margin-top: 16px;
+  margin-top: 24px;
   text-align: center;
+  font-size: 0.95rem;
+  color: #555;
 
   span {
-    margin-right: 8px;
+    margin-right: 6px;
   }
 }

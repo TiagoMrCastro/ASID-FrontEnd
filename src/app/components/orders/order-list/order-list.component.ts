@@ -8,11 +8,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
-import { AuthService } from '../../../services/auth.service'; 
+import { AuthService } from '../../../services/auth.service';
 import { BookService, Book } from '../../../services/book.service';
 import { ShippingService } from '../../../services/shipping.service';
 import { ShippingOrder } from '../../../models/shipping.model';
 import { NavbarComponent } from '../../../components/navbar/navbar.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-order-list',
@@ -25,17 +27,20 @@ import { NavbarComponent } from '../../../components/navbar/navbar.component';
     MatInputModule,
     MatButtonModule,
     MatDividerModule,
-    NavbarComponent
+    NavbarComponent,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   templateUrl: './order-list.component.html',
-  styleUrls: ['./order-list.component.scss']
+  styleUrls: ['./order-list.component.scss'],
 })
 export class OrderListComponent implements OnInit {
   orders: OrderDetailsResponse[] = [];
   books: Book[] = [];
   shippings: ShippingOrder[] = [];
-  from = '';
-  to = '';
+  from: Date | null = null;
+  to: Date | null = null;
+
   userId: number | null = null;
 
   constructor(
@@ -44,7 +49,7 @@ export class OrderListComponent implements OnInit {
     private bookService: BookService,
     private shippingService: ShippingService
   ) {
-    this.userId = this.auth.getUserId(); 
+    this.userId = this.auth.getUserId();
   }
 
   ngOnInit() {
@@ -67,18 +72,43 @@ export class OrderListComponent implements OnInit {
       return;
     }
 
-    this.orderService.getOrderHistory(this.userId, this.from, this.to).subscribe(res => {
-      this.orders = res;
-    });
+    this.orderService
+      .getOrderHistory(
+        this.userId,
+        this.formatDate(this.from),
+        this.formatDate(this.to)
+      )
+      .subscribe((res) => {
+        this.orders = res;
+      });
   }
 
   getBookTitle(bookId: number): string {
-    const book = this.books.find(b => b.id === bookId);
+    const book = this.books.find((b) => b.id === bookId);
     return book ? book.title : `Livro #${bookId} (não encontrado)`;
   }
 
   getShippingName(shippingId: string): string {
-    const shipping = this.shippings.find(s => s.id?.toString() === shippingId);
-    return shipping ? `${shipping.firstName} ${shipping.lastName}` : 'Não disponível';
+    const shipping = this.shippings.find(
+      (s) => s.id?.toString() === shippingId
+    );
+    return shipping
+      ? `${shipping.firstName} ${shipping.lastName}`
+      : 'Não disponível';
+  }
+
+  getShippingAdress(shippingId: string): string {
+    const shipping = this.shippings.find(
+      (s) => s.id?.toString() === shippingId
+    );
+    return shipping ? `${shipping.address}` : 'Não disponível';
+  }
+
+  formatDate(date: Date | null): string {
+    if (!date) return '';
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // getMonth() é 0-based
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 }

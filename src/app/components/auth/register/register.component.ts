@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { Router } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-register',
@@ -15,10 +16,11 @@ import { Router } from '@angular/router';
     FormsModule,
     MatInputModule,
     MatButtonModule,
-    MatCardModule
+    MatCardModule,
+    MatIconModule,
   ],
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent {
   fullname = '';
@@ -36,23 +38,36 @@ export class RegisterComponent {
     }
 
     this.isLoading = true;
-    this.auth.register({
-      fullname: this.fullname,
-      username: this.username,
-      email: this.email,
-      password: this.password
-    }).subscribe({
-      next: () => {
-        this.isLoading = false;
-        alert('Registo efetuado com sucesso!');
-        this.router.navigate(['/login']);
-      },
-      error: (err) => {
-        this.isLoading = false;
-        alert('Erro ao registar: ' + (err.error || 'Tente novamente.'));
-      }
-    });
+    this.auth
+      .register({
+        fullname: this.fullname,
+        username: this.username,
+        email: this.email,
+        password: this.password,
+      })
+      .subscribe({
+        next: () => {
+          this.isLoading = false;
+          alert('Registo efetuado com sucesso!');
+          this.router.navigate(['/login']);
+        },
+        error: (err) => {
+          this.isLoading = false;
+
+          let mensagem = 'Erro ao registar.';
+
+          if (err.error && typeof err.error === 'object') {
+            mensagem =
+              err.error.message || err.error.error || JSON.stringify(err.error);
+          } else if (typeof err.error === 'string') {
+            mensagem = err.error;
+          }
+
+          alert('Erro ao registar: ' + mensagem);
+        },
+      });
   }
-
-
+  goToLogin() {
+    this.router.navigate(['/login']);
+  }
 }

@@ -1,31 +1,55 @@
 <div class="register-container">
-  <mat-card class="register-card">
-    <mat-card-title>Registar</mat-card-title>
+  <mat-card class="register-card mat-elevation-z4">
+    <mat-card-header>
+      <mat-card-title>📝 Criar conta na <strong>ASID BookStore</strong></mat-card-title>
+      <mat-card-subtitle>Preenche os teus dados para começares a comprar livros</mat-card-subtitle>
+    </mat-card-header>
+
     <mat-card-content>
-      <form (ngSubmit)="register()">
+      <form (ngSubmit)="register()" #registerForm="ngForm" autocomplete="on">
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Nome completo</mat-label>
-          <input matInput [(ngModel)]="fullname" name="fullname" required />
+          <input matInput name="fullname" [(ngModel)]="fullname" required />
+          <mat-error *ngIf="registerForm.submitted && !fullname">
+            Este campo é obrigatório.
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Username</mat-label>
-          <input matInput [(ngModel)]="username" name="username" required />
+          <mat-label>Nome de utilizador</mat-label>
+          <input matInput name="username" [(ngModel)]="username" required />
+          <mat-error *ngIf="registerForm.submitted && !username">
+            Este campo é obrigatório.
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Email</mat-label>
-          <input matInput [(ngModel)]="email" name="email" required type="email" />
+          <input matInput name="email" [(ngModel)]="email" type="email" required />
+          <mat-error *ngIf="registerForm.submitted && !email">
+            Insere um email válido.
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Password</mat-label>
-          <input matInput [(ngModel)]="password" name="password" required type="password" />
+          <mat-label>Palavra-passe</mat-label>
+          <input matInput name="password" [(ngModel)]="password" type="password" required />
+          <mat-error *ngIf="registerForm.submitted && !password">
+            Este campo é obrigatório.
+          </mat-error>
         </mat-form-field>
 
         <div class="button-container">
-          <button mat-raised-button color="primary" type="submit" [disabled]="isLoading">
+          <button mat-flat-button color="primary" type="submit" [disabled]="isLoading">
+            <mat-icon style="margin-right: 6px">person_add</mat-icon>
             {{ isLoading ? 'A registar...' : 'Registar' }}
+          </button>
+        </div>
+
+        <div class="login-link">
+          <span>Já tens conta?</span>
+          <button mat-button type="button" color="accent" (click)="goToLogin()">
+            Iniciar sessão
           </button>
         </div>
       </form>

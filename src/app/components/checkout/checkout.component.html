@@ -1,63 +1,115 @@
 <app-navbar></app-navbar>
-<div class="container-wrapper" style="display: flex; justify-content: center;">
-  <div class="container" style="width: 1000px; padding: 20px;">
-    <mat-card style="padding:20px"*ngIf="composition">
+<div class="container-wrapper" style="display: flex; justify-content: center">
+  <div class="container" style="width: 1000px; padding: 20px">
+    <mat-card style="padding: 20px" *ngIf="composition">
       <h2>Detalhes da Encomenda #{{ composition.order.id }}</h2>
       <p><strong>Data:</strong> {{ composition.order.orderDate | date }}</p>
-      <p><strong>Custo Total:</strong> {{ composition.order.totalPrice | currency:'EUR' }}</p>
+      <div class="book-mini-cards">
+        <mat-card
+          *ngFor="let book of composition.books"
+          class="mini-book-card mat-elevation-z1"
+        >
+          <img
+            mat-card-image
+            [src]="
+              book.imageUrl || 'assets/images/' + getImageFilename(book.id)
+            "
+            alt="{{ book.title }}"
+            onerror="this.src='assets/images/placeholder.png'"
+          />
+          <mat-card-content>
+            <p>
+              <strong>{{ book.title }}</strong>
+            </p>
+               
+            <p>{{ book.price | currency : "EUR" }}</p>
+          </mat-card-content>
+          
+        </mat-card>
+        
+      </div>
+      <p style="margin-top: 30px">
+        <strong>Custo Total:</strong>
+        {{ composition.order.totalPrice | currency : "EUR" }}
+      </p>
 
-    <h3>Livros:</h3>
-    <div class="book-mini-cards">
-      <mat-card *ngFor="let book of composition.books" class="mini-book-card mat-elevation-z1">
-            <img mat-card-image [src]="book.imageUrl || 'assets/images/' + getImageFilename(book.id)" alt="{{ book.title }}"
-            onerror="this.src='assets/images/placeholder.png'">
-        <mat-card-content>
-          <p><strong>{{ book.title }}</strong></p>
-          <p>{{ book.price | currency:'EUR' }}</p>
-        </mat-card-content>
-      </mat-card>
-    </div>
+      <!-- Mostrar seletor apenas se a flag permitir -->
+      <div *ngIf="showShippingForm">
+        <div>
+          <h3>Selecionar Endereço de Envio</h3>
+          <mat-form-field style="min-width: 365px;">
+            <mat-label>Endereço</mat-label>
+            <mat-select [(ngModel)]="selectedShippingId" name="shippingSelect">
+              <mat-option *ngFor="let s of shippingOptions" [value]="s.id">
+                {{ s.firstName }} {{ s.lastName }} - {{ s.address }},
+                {{ s.city }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <button mat-raised-button color="primary" (click)="assignShipping()">
+          Adicionar morada
+        </button>
+      </div>
 
-      <h3>Selecionar Endereço de Envio</h3>
-      <mat-form-field class="full-width">
-        <mat-label>Endereço</mat-label>
-        <mat-select [(ngModel)]="selectedShippingId" name="shippingSelect">
-          <mat-option *ngFor="let s of shippingOptions" [value]="s.id">
-            {{ s.firstName }} {{ s.lastName }} - {{ s.address }}, {{ s.city }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <button mat-raised-button color="primary" (click)="assignShipping()">Adicionar morada</button>
-
-      <div style="margin-top: 10px;" *ngIf="composition.shipping && composition.shipping.id">
+      <div
+        style="margin-top: 10px"
+        *ngIf="composition.shipping && composition.shipping.id"
+      >
         <h3>Detalhes de morada para envio:</h3>
-        <p>{{ composition.shipping.firstName }} {{ composition.shipping.lastName }}</p>
-        <p>{{ composition.shipping.address }}, {{ composition.shipping.city }}</p>
+        <p>
+          {{ composition.shipping.firstName }}
+          {{ composition.shipping.lastName }}
+        </p>
+        <p>
+          {{ composition.shipping.address }}, {{ composition.shipping.city }}
+        </p>
         <p>{{ composition.shipping.email }}</p>
+      </div>
+      <!-- Botão para reativar o formulário -->
+      <div *ngIf="!showShippingForm" style="margin-top: 20px">
+        <button
+          mat-stroked-button
+          color="accent"
+          (click)="showShippingForm = true"
+        >
+          Alterar morada
+        </button>
       </div>
     </mat-card>
   </div>
-  <div class="container" style="max-width: 500px; padding: 20px;">
-      <mat-card style="padding: 20px;" *ngIf="composition">
+  <div class="container" style="max-width: 500px; padding: 20px">
+    <mat-card style="padding: 20px" *ngIf="composition">
       <h2>Estado da Encomenda #{{ composition.order.id }}</h2>
-      <p style="background-color: yellow;"><strong>Estado:</strong> {{ composition.order.sagaStatus }}</p>
-
+      <p style="background-color: yellow">
+        <strong>Estado:</strong> {{ composition.order.sagaStatus }}
+      </p>
     </mat-card>
   </div>
 </div>
-<div 
-  class="actions" 
-  style="margin-top: 26px; align-items: center; display: flex; justify-content: center;"
-  *ngIf="composition?.order?.sagaStatus !== 'COMPLETED' && composition?.order?.sagaStatus !== 'CANCELLED'"
+
+<div
+  style="
+    margin-top: 26px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  "
+  *ngIf="
+    composition?.order?.sagaStatus !== 'COMPLETED' &&
+    composition?.order?.sagaStatus !== 'CANCELLED'
+  "
 >
   <button mat-raised-button color="warn" (click)="cancelOrder()">
     Cancelar Encomenda
   </button>
 
-  <button mat-raised-button color="primary" (click)="finalizeOrder()" style="margin-left: 12px;">
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="finalizeOrder()"
+    style="margin-left: 12px"
+  >
     Finalizar Encomenda
   </button>
 </div>
-
-

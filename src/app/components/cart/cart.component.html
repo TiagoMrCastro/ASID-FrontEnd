@@ -14,7 +14,9 @@
       *ngIf="bookExists(item.bookId)"
       [src]="getBookImage(item.bookId)"
       (error)="onImageError($event)"
-      alt="{{ item.bookTitle }}">
+      alt="{{ item.bookTitle }}"
+      class="book-image"
+  />
 
 
 

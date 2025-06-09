@@ -1,0 +1,22 @@
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 10px;
+}
+
+mat-card {
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+}
+
+.order-card {
+  max-width: 600px;
+  margin: 1rem auto;
+}
+mat-card-header{
+    background-color: lightgray;
+    border-radius: 8px;
+}
+mat-card-content{
+    padding: 3rem;
+}

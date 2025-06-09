@@ -1,40 +1,57 @@
 <app-navbar></app-navbar>
-<mat-card>
-  <h3>Histórico de Encomendas (CQRS)</h3>
 
-  <mat-form-field>
-    <mat-label>Data Início</mat-label>
-    <input matInput [(ngModel)]="from" type="date">
-  </mat-form-field>
+<div class="container">
+  <h2>Histórico de Encomendas (CQRS)</h2>
+  <mat-card style="padding:10px; margin-bottom: 20px;">
+    <h3>Selecione as datas que pretende filtrar</h3>
 
-  <mat-form-field>
-    <mat-label>Data Fim</mat-label>
-    <input matInput [(ngModel)]="to" type="date">
-  </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Data Início</mat-label>
+      <input matInput [matDatepicker]="pickerFrom" [(ngModel)]="from" />
+      <mat-datepicker-toggle
+        matSuffix
+        [for]="pickerFrom"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #pickerFrom></mat-datepicker>
+    </mat-form-field>
 
-  <button mat-raised-button color="primary" (click)="fetchOrders()">Filtrar</button>
-</mat-card>
+    <mat-form-field appearance="fill">
+      <mat-label>Data Fim</mat-label>
+      <input matInput [matDatepicker]="pickerTo" [(ngModel)]="to" />
+      <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+      <mat-datepicker #pickerTo></mat-datepicker>
+    </mat-form-field>
 
-<mat-card *ngFor="let order of orders" style="margin-top: 1rem;">
-  <mat-card-title>
-    Encomenda #{{ order.orderId }} | {{ order.orderDate }}
-  </mat-card-title>
+    <button mat-raised-button color="primary" (click)="fetchOrders()">
+      Filtrar
+    </button>
+  </mat-card>
 
-  <mat-card-content>
-    <p><strong>Total:</strong> {{ order.totalPrice | currency:'EUR' }}</p>
-    <p><strong>Morada:</strong> {{ order.shippingAddress }}</p>
+  <mat-card *ngFor="let order of orders" class="order-card">
+    <mat-card-header>
+      <mat-card-title>
+        Encomenda #{{ order.orderId }} | {{ order.orderDate }}</mat-card-title
+      >
+    </mat-card-header>
 
-    <ng-container>
-      <p><strong>Enviado para:</strong> {{ getShippingName(order.shippingAddress) || 'Não disponível' }}</p>
-    </ng-container>
+    <mat-card-content>
+      <p><strong>Total:</strong> {{ order.totalPrice | currency : "EUR" }}</p>
+      <p>
+        <strong>Morada:</strong>
+        {{ getShippingAdress(order.shippingAddress) || "Não disponível" }}
+      </p>
+      <p>
+        <strong>Enviado para:</strong>
+        {{ getShippingName(order.shippingAddress) || "Não disponível" }}
+      </p>
 
-    <h4>Livros:</h4>
-    <ul>
-      <li *ngFor="let book of order.books">
-        {{ getBookTitle(book.bookId) }} - {{ book.quantity }}x - {{ book.price | currency:'EUR' }}
-      </li>
-    </ul>
-  </mat-card-content>
-</mat-card>
-
-
+      <h4>Livros:</h4>
+      <ul>
+        <li *ngFor="let book of order.books">
+          {{ getBookTitle(book.bookId) }} - {{ book.quantity }}x -
+          {{ book.price | currency : "EUR" }}
+        </li>
+      </ul>
+    </mat-card-content>
+  </mat-card>
+</div>

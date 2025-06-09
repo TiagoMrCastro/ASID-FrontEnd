@@ -3,35 +3,54 @@
 <div class="container mt-4">
   <h2 class="section-title">📚 Lista de Livros</h2>
 
-    <div class="book-grid">
-      <mat-card *ngFor="let book of books" class="example-card mat-elevation-z3" appearance="outlined">
-        <mat-card-header>
-          <div mat-card-avatar class="example-header-image"></div>
-          <mat-card-title>{{ book.title }}</mat-card-title>
-          <mat-card-subtitle>{{ book.author?.authorName }}</mat-card-subtitle>
-        </mat-card-header>
+  <div class="book-grid">
+    <mat-card
+      *ngFor="let book of books"
+      class="example-card mat-elevation-z3"
+      appearance="outlined"
+    >
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>{{ book.title }}</mat-card-title>
+        <mat-card-subtitle>{{ book.author?.authorName }}</mat-card-subtitle>
+      </mat-card-header>
 
-        <img mat-card-image [src]="book.imageUrl || 'assets/images/' + getImageFilename(book.id)" alt="{{ book.title }}"
-            onerror="this.src='assets/images/placeholder.png'">
+      <img
+        mat-card-image
+        [src]="book.imageUrl || 'assets/images/' + getImageFilename(book.id)"
+        alt="{{ book.title }}"
+        onerror="this.src='assets/images/placeholder.png'"
+      />
 
-        <mat-card-content>
-          <p>{{ book.description }}</p>
-          <p><strong>Preço:</strong> {{ book.price | currency:'EUR' }}</p>
-          <p><strong>Quantidade:</strong> {{ book.quantity }}</p>
-        </mat-card-content>
+      <mat-card-content>
+        <p>{{ book.description }}</p>
+        <p><strong>Preço:</strong> {{ book.price | currency : "EUR" }}</p>
+        <p><strong>Quantidade:</strong> {{ book.quantity }}</p>
+      </mat-card-content>
+    </mat-card>
+    <mat-card *ngFor="let book of books"       class="example-card mat-elevation-z3"
+      appearance="outlined">
+      <mat-card-actions>
+        <div style="display: flex; align-items: center; gap: 10px">
+          <mat-form-field appearance="outline" style="width: 100px; margin: 0">
+            <input
+              matInput
+              type="number"
+              [(ngModel)]="book.selectedQuantity"
+              min="1"
+              [max]="book.quantity"
+            />
+          </mat-form-field>
 
-        <mat-card-actions>
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <mat-form-field appearance="outline" style="width: 100px; margin: 0;">
-              <input matInput type="number" [(ngModel)]="book.selectedQuantity" min="1" [max]="book.quantity" />
-            </mat-form-field>
-
-            <button mat-button color="primary" (click)="addToCart(book.id, book.selectedQuantity || 1)">
-              🛒 Adicionar
-            </button>
-          </div>
-        </mat-card-actions>
-
-      </mat-card>
-    </div>
+          <button
+            mat-button
+            color="primary"
+            (click)="addToCart(book.id, book.selectedQuantity || 1)"
+          >
+            🛒 Adicionar
+          </button>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </div>
 </div>
