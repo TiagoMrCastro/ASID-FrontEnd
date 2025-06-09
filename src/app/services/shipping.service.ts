@@ -11,6 +11,10 @@ export class ShippingService {
 
   constructor(private http: HttpClient) {}
 
+  getAllShippingOrders(): Observable<ShippingOrder[]> {
+    return this.http.get<ShippingOrder[]>(this.baseUrl);
+  }
+
   createShippingOrder(order: ShippingOrder): Observable<ShippingOrder> {
     return this.http.post<ShippingOrder>(this.baseUrl, order);
   }

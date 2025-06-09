@@ -1,37 +1,63 @@
-<mat-card>
-  <h2>Informações de Envio</h2>
+<app-navbar></app-navbar>
+<div class="container-wrapper" style="display: flex; justify-content: center;">
+  <div class="container" style="width: 1000px; padding: 20px;">
+    <mat-card style="padding:20px"*ngIf="composition">
+      <h2>Detalhes da Encomenda #{{ composition.order.id }}</h2>
+      <p><strong>Data:</strong> {{ composition.order.orderDate | date }}</p>
+      <p><strong>Custo Total:</strong> {{ composition.order.totalPrice | currency:'EUR' }}</p>
 
-  <form (ngSubmit)="submitOrder()">
-    <mat-form-field class="full-width">
-      <mat-label>Primeiro Nome</mat-label>
-      <input matInput [(ngModel)]="shipping.firstName" name="firstName">
-    </mat-form-field>
+    <h3>Livros:</h3>
+    <div class="book-mini-cards">
+      <mat-card *ngFor="let book of composition.books" class="mini-book-card mat-elevation-z1">
+            <img mat-card-image [src]="book.imageUrl || 'assets/images/' + getImageFilename(book.id)" alt="{{ book.title }}"
+            onerror="this.src='assets/images/placeholder.png'">
+        <mat-card-content>
+          <p><strong>{{ book.title }}</strong></p>
+          <p>{{ book.price | currency:'EUR' }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
 
-    <mat-form-field class="full-width">
-      <mat-label>Último Nome</mat-label>
-      <input matInput [(ngModel)]="shipping.lastName" name="lastName">
-    </mat-form-field>
+      <h3>Selecionar Endereço de Envio</h3>
+      <mat-form-field class="full-width">
+        <mat-label>Endereço</mat-label>
+        <mat-select [(ngModel)]="selectedShippingId" name="shippingSelect">
+          <mat-option *ngFor="let s of shippingOptions" [value]="s.id">
+            {{ s.firstName }} {{ s.lastName }} - {{ s.address }}, {{ s.city }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <mat-form-field class="full-width">
-      <mat-label>Endereço</mat-label>
-      <input matInput [(ngModel)]="shipping.address" name="address">
-    </mat-form-field>
+      <button mat-raised-button color="primary" (click)="assignShipping()">Adicionar morada</button>
 
-    <mat-form-field class="full-width">
-      <mat-label>Cidade</mat-label>
-      <input matInput [(ngModel)]="shipping.city" name="city">
-    </mat-form-field>
+      <div style="margin-top: 10px;" *ngIf="composition.shipping && composition.shipping.id">
+        <h3>Detalhes de morada para envio:</h3>
+        <p>{{ composition.shipping.firstName }} {{ composition.shipping.lastName }}</p>
+        <p>{{ composition.shipping.address }}, {{ composition.shipping.city }}</p>
+        <p>{{ composition.shipping.email }}</p>
+      </div>
+    </mat-card>
+  </div>
+  <div class="container" style="max-width: 500px; padding: 20px;">
+      <mat-card style="padding: 20px;" *ngIf="composition">
+      <h2>Estado da Encomenda #{{ composition.order.id }}</h2>
+      <p style="background-color: yellow;"><strong>Estado:</strong> {{ composition.order.sagaStatus }}</p>
 
-    <mat-form-field class="full-width">
-      <mat-label>Email</mat-label>
-      <input matInput [(ngModel)]="shipping.email" name="email">
-    </mat-form-field>
+    </mat-card>
+  </div>
+</div>
+<div 
+  class="actions" 
+  style="margin-top: 26px; align-items: center; display: flex; justify-content: center;"
+  *ngIf="composition?.order?.sagaStatus !== 'COMPLETED' && composition?.order?.sagaStatus !== 'CANCELLED'"
+>
+  <button mat-raised-button color="warn" (click)="cancelOrder()">
+    Cancelar Encomenda
+  </button>
 
-    <mat-form-field class="full-width">
-      <mat-label>Código Postal</mat-label>
-      <input matInput [(ngModel)]="shipping.postalCode" name="postalCode">
-    </mat-form-field>
+  <button mat-raised-button color="primary" (click)="finalizeOrder()" style="margin-left: 12px;">
+    Finalizar Encomenda
+  </button>
+</div>
 
-    <button mat-raised-button color="primary" type="submit">Finalizar Encomenda</button>
-  </form>
-</mat-card>
+

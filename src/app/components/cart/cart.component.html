@@ -1,33 +1,49 @@
-<mat-toolbar color="primary" class="mat-elevation-z4">
-  <span class="logo">📖 ASID Livraria</span>
-  <span class="spacer"></span>
-  <button mat-button routerLink="/books">Home</button>
-  <button mat-button routerLink="/cart">Carrinho</button>
-  <button mat-button routerLink="/orders">Pedidos</button>
-  <button mat-button routerLink="/checkout">Checkout</button>
-<button mat-stroked-button color="accent" (click)="logout()">Logout</button>
-</mat-toolbar>
+<app-navbar></app-navbar>
+<h2 class="section-title">🛒 Carrinho</h2>
 
-<mat-card *ngFor="let item of cartItems">
-  <mat-card-title>{{ item.bookTitle }}</mat-card-title>
-  <mat-card-content>
-    <p><strong>ID do Livro:</strong> {{ item.bookId }}</p>
-    <p><strong>Quantidade:</strong> {{ item.quantity }}</p>
-    <p><strong>Preço Unitário:</strong> {{ item.unitPrice | currency:'EUR' }}</p>
-    <p><strong>Subtotal:</strong> {{ item.subTotal | currency:'EUR' }}</p>
+<div class="cart-grid">
+  <mat-card *ngFor="let item of cartItems" class="cart-card mat-elevation-z2" appearance="outlined">
     
-    <!-- Info do carrinho (associação com item.cart) -->
-    <p *ngIf="item.cart">
-      <strong>ID Carrinho:</strong> {{ item.cart.id }}<br>
-      <strong>Data de Criação:</strong> {{ item.cart.createdDate | date:'short' }}
-    </p>
+    <!-- Cabeçalho com título -->
+    <mat-card-header>
+      <mat-card-title>{{ getBookTitle(item.bookId) }}</mat-card-title>
+    </mat-card-header>
 
-    <button mat-icon-button color="warn" (click)="removeItem(item.id!)">
-      <mat-icon>delete</mat-icon>
-    </button>
-  </mat-card-content>
-</mat-card>
+    <!-- Imagem -->
+  <img mat-card-image
+      *ngIf="bookExists(item.bookId)"
+      [src]="getBookImage(item.bookId)"
+      (error)="onImageError($event)"
+      alt="{{ item.bookTitle }}">
 
-<mat-card>
-  <mat-card-title>Total: {{ getTotal() | currency:'EUR' }}</mat-card-title>
-</mat-card>
+
+
+    <!-- Conteúdo -->
+    <mat-card-content>
+      <p><strong>Quantidade:</strong> {{ item.quantity }}</p>
+      <p><strong>Preço Unitário:</strong> {{ item.unitPrice | currency:'EUR' }}</p>
+      <p><strong>Subtotal:</strong> {{ item.subTotal | currency:'EUR' }}</p>
+
+      <p *ngIf="item.cart">
+        <strong>Adicionado em:</strong> {{ item.cart.createdDate | date:'short' }}
+      </p>
+    </mat-card-content>
+
+    <!-- Ações -->
+    <mat-card-actions align="end">
+      <button mat-icon-button color="warn" (click)="removeItem(item.id!)" matTooltip="Remover item">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+
+<!-- Card do total -->
+<div class="total-card mat-elevation-z2">
+  <mat-card-title style="font-weight: bold;">Total: {{ getTotal() | currency:'EUR' }}</mat-card-title>
+</div>
+<div class= " total-card mat-elevation-z2">
+  <button mat-button color="primary" (click)="onCreateOrder()">
+    🛒 Avançar para encomenda
+  </button>
+</div>

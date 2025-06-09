@@ -1,3 +1,4 @@
+<app-navbar></app-navbar>
 <mat-card>
   <h3>Histórico de Encomendas (CQRS)</h3>
 
@@ -15,17 +16,25 @@
 </mat-card>
 
 <mat-card *ngFor="let order of orders" style="margin-top: 1rem;">
-  <mat-card-title>Pedido #{{ order.orderId }} | {{ order.orderDate }}</mat-card-title>
+  <mat-card-title>
+    Encomenda #{{ order.orderId }} | {{ order.orderDate }}
+  </mat-card-title>
+
   <mat-card-content>
     <p><strong>Total:</strong> {{ order.totalPrice | currency:'EUR' }}</p>
     <p><strong>Morada:</strong> {{ order.shippingAddress }}</p>
-    <p><strong>Enviado para:</strong> {{ order.shipping.firstName }} {{ order.shipping.lastName }}</p>
+
+    <ng-container>
+      <p><strong>Enviado para:</strong> {{ getShippingName(order.shippingAddress) || 'Não disponível' }}</p>
+    </ng-container>
 
     <h4>Livros:</h4>
     <ul>
       <li *ngFor="let book of order.books">
-        {{ book.title }} - {{ book.quantity }}x - {{ book.price | currency:'EUR' }}
+        {{ getBookTitle(book.bookId) }} - {{ book.quantity }}x - {{ book.price | currency:'EUR' }}
       </li>
     </ul>
   </mat-card-content>
 </mat-card>
+
+

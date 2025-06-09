@@ -3,12 +3,7 @@ export interface OrderDetailsResponse {
   orderDate: string;
   totalPrice: number;
   shippingAddress: string;
-  books: {
-    id: number;
-    title: string;
-    price: number;
-    quantity: number;
-  }[];
+  sagaStatus: string;
   shipping: {
     firstName: string;
     lastName: string;
@@ -16,5 +11,11 @@ export interface OrderDetailsResponse {
     city: string;
     email: string;
     postalCode: string;
-  };
+  } | null;
+  books: {
+    bookId: number;
+    title: string | null;
+    quantity: number;
+    price: number;
+  }[];
 }

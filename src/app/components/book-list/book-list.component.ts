@@ -9,6 +9,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { NavbarComponent } from '../../components/navbar/navbar.component';
+
 
 
 @Component({
@@ -20,7 +25,11 @@ import { RouterModule } from '@angular/router';
     MatButtonModule,
     MatToolbarModule,
     HttpClientModule ,
-    RouterModule 
+    RouterModule,
+    FormsModule ,
+    MatInputModule,
+    MatFormFieldModule,
+    NavbarComponent
   ],
   templateUrl: './book-list.component.html',
   styleUrls: ['./book-list.component.scss']
@@ -36,15 +45,12 @@ export class BookListComponent implements OnInit {
 
   loadBooks() {
     this.bookService.getBooks().subscribe(data => {
-      this.books = data;
+      this.books = data.map(book => ({
+        ...book,
+        selectedQuantity: 1
+      }));
     });
   }
-
-  // getImageFilename(title: string): string {
-  //   return title.toLowerCase().replace(/\s+/g, '-') + '.jpg';
-  // }
-
-  
 
   deleteBook(id: number) {
     this.bookService.deleteBook(id).subscribe(() => {
@@ -52,21 +58,34 @@ export class BookListComponent implements OnInit {
     });
   }
   
-  addToCart(bookId: number) {
+  addToCart(bookId: number, quantity: number = 1) {
     const userId = this.auth.getUserId(); 
     if (userId === null) {
       alert('Utilizador não autenticado!');
       return;
     }
 
-    this.cartService.addToCart({ userId, bookId, quantity: 1 }).subscribe(() => {
-      alert('Livro adicionado ao carrinho!');
+    if (quantity < 1) {
+      alert('Quantidade inválida!');
+      return;
+    }
+
+    this.cartService.addToCart({ userId, bookId, quantity }).subscribe(() => {
+      alert(`Livro adicionado ao carrinho (quantidade: ${quantity})`);
     });
   }
+
 
   logout() {
     this.auth.logout();
     this.router.navigate(['/login']);
   }
+
+  getImageFilename(BookId: string): string {
+  if (!BookId) return 'placeholder.png';
+  return BookId
+    + '.jpg';
+  }
+
 
 }
